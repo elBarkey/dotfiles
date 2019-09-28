@@ -20,15 +20,23 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 " easymotion
 Plug 'easymotion/vim-easymotion'
+" onedark theme
+Plug 'joshdick/onedark.vim'
 call plug#end()
 
 "#### KONFIGURASI SAYA
 
 " basic
 set encoding=UTF-8
+syntax on
 set number
+set relativenumber
 set notermguicolors
+" tabspace = 2
 set tabstop=2 shiftwidth=2 expandtab
+" auto indent
+set ai
+set si
 
 "enable tabline
 let g:airline#extensions#tabline#enabled = 1
@@ -40,9 +48,9 @@ let g:airline#extensions#coc#enabled = 1
 
 "enable airline fonts
 let g:airline_powerline_fonts = 1
-:let g:airline_theme='dark'
+:let g:airline_theme='onedark'
 let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-highlight', 'coc-lists', 'coc-snippets', 'coc-vetur']
-colorscheme gruvbox
+colorscheme onedark
 
 "mapping
 :let mapleader = ";"
@@ -74,3 +82,5 @@ inoremap <silent><expr> <TAB>
 nnoremap <silent> <expr> <F3> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
 " open fzf files
 nnoremap <C-p> :Files<cr>
+" format document with coc-prettier
+nnoremap <C-S-i> :CocCommand prettier.formatFile<cr>
