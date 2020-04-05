@@ -22,6 +22,8 @@ Plug 'tpope/vim-surround'
 Plug 'easymotion/vim-easymotion'
 " onedark theme
 Plug 'joshdick/onedark.vim'
+" file manager
+Plug 'vifm/vifm'
 call plug#end()
 
 "#### KONFIGURASI SAYA
