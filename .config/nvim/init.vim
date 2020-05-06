@@ -1,4 +1,5 @@
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.local/share/vim/plugged')
+Plug 'https://github.com/joshdick/onedark.vim.git'
 " Use release branch
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " status dibawah biar keren Plug 'vim-airline/vim-airline'
@@ -22,8 +23,16 @@ Plug 'tpope/vim-surround'
 Plug 'easymotion/vim-easymotion'
 " onedark theme
 Plug 'joshdick/onedark.vim'
+"auto pairs
+Plug 'jiangmiao/auto-pairs'
 " file manager
-Plug 'vifm/vifm'
+Plug 'vifm/vifm.vim'
+" rainbow brackets
+Plug 'junegunn/rainbow_parentheses.vim'
+"single nerdtree
+Plug 'jistr/vim-nerdtree-tabs'
+"vue syntax highlight
+Plug 'posva/vim-vue'
 call plug#end()
 
 "#### KONFIGURASI SAYA
@@ -32,7 +41,7 @@ call plug#end()
 set encoding=UTF-8
 syntax on
 set number
-set relativenumber
+"set relativenumber
 set notermguicolors
 " tabspace = 2
 set tabstop=2 shiftwidth=2 expandtab
@@ -51,7 +60,10 @@ let g:airline#extensions#coc#enabled = 1
 "enable airline fonts
 let g:airline_powerline_fonts = 1
 :let g:airline_theme='onedark'
-let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-highlight', 'coc-lists', 'coc-snippets', 'coc-vetur']
+
+" COC specific
+"let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-yank', 'coc-prettier', 'coc-highlight', 'coc-lists', 'coc-snippets', 'coc-vetur']
+"command! -nargs=0 Prettier :CocCommand prettier.formatFile
 colorscheme onedark
 
 "mapping
@@ -82,7 +94,16 @@ inoremap <silent><expr> <TAB>
       \ coc#refresh()
 " toggle nerdtree
 nnoremap <silent> <expr> <F3> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
+"toggle nerdtree tab
+ map <Leader>n <plug>NERDTreeTabsToggle<CR>
 " open fzf files
 nnoremap <C-p> :Files<cr>
 " format document with coc-prettier
 nnoremap <C-S-i> :CocCommand prettier.formatFile<cr>
+
+"use TAB to navigate completion
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"user ENTER to confirm completion
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
