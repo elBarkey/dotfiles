@@ -1,0 +1,117 @@
+(defcfg
+  process-unmapped-keys yes
+  linux-dev /dev/input/by-path/platform-i8042-serio-0-event-kbd
+  )
+
+(defsrc
+  ;; 2 3 4 5 6 7 8 9 0 -
+  ;; 1 2 3 4 5 6 7 8 9 0
+  1 2 3 4 5 7 8 9 0 -
+  ;; w e r t y u i o p [
+  ;; q w e r t y u i o p
+  tab q w e r t u i o p [ ]
+  ;; s d f g h j k l scln '
+  ;; a s d f g h j k l ;
+  a s d f g j k l ; '
+  ;; b n m ,
+  ;; v b n m
+  v b n m
+  )
+
+(defalias
+  base (layer-switch base)
+  syms (layer-switch syms)
+  navs (layer-switch navs)
+  nums (layer-switch nums)
+
+  ossft (one-shot 1000 lsft)
+  osctl (one-shot 1000 lctl)
+
+  ;; home row base layer
+  hlsft (tap-hold-release 200 200 z lsft)
+  hlctl (tap-hold-release 200 200 x lctl)
+  dalt (tap-hold-release 200 200 d lalt)
+  fgui (tap-hold-release 200 200 f lmeta)
+  jgui (tap-hold-release 200 200 j rmeta)
+  kalt (tap-hold-release 200 200 k lalt)
+  hrctl (tap-hold-release 200 200 . lctl)
+  hrsft (tap-hold-release 200 200 / lsft)
+  clalt (tap-hold-release 200 200 a lalt)
+  clctl (tap-hold-release 200 200 r lctl)
+  clsft (tap-hold-release 200 200 s lsft)
+  clgui (tap-hold-release 200 200 t lmeta)
+  crgui (tap-hold-release 200 200 n lmeta)
+  crsft (tap-hold-release 200 200 e lsft)
+  crctl (tap-hold-release 200 200 i lctl)
+  cralt (tap-hold-release 200 200 o lalt)
+
+  ;; home row colemak
+  cdalt (tap-hold-release 200 200 s lalt)
+  cfgui (tap-hold-release 200 200 t lmeta)
+  cjgui (tap-hold-release 200 200 n rmeta)
+  ckalt (tap-hold-release 200 200 e lalt)
+
+  ;; thumb buttons
+  t2 (tap-hold-release 200 200 tab (layer-while-held navs))
+  t3 (tap-hold-release 200 200 ret (layer-while-held nums))
+  t4 (tap-hold-release 200 200 bspc (layer-while-held syms))
+  ;; sc (layer-switch basedh)
+  ;; sb (layer-switch base)
+
+  ;; home row nav layer 
+  ;; jgui (tap-hold 200 200 j rmeta)
+
+  ;; chi (chord base i)
+  ;; cho (chord base o)
+  mwu (mwheel-up 50 120)
+  mwd (mwheel-down 50 120)
+  mwl (mwheel-left 50 120)
+  mwr (mwheel-right 50 120)
+  mml (movemouse-left 1 1)
+  mmr (movemouse-right 1 1)
+  mmu (movemouse-up 1 1)
+  mmd (movemouse-down 1 1)
+  )
+
+;; (defchords base 500
+;;   (i  ) i
+;;   (  o) o
+;;   (i  o) C-bspc
+;; )
+
+#|
+(deflayer base
+      q       w       e     r     t           y       u     i     o       p
+  esc a       s       @dalt @fgui g           h       @jgui @kalt l       scln
+      @hlsft  @hlctl  c     v     b           n       m     ,     @hrctl  @hrsft
+                            spc   @t2         @t3     @t4
+|#
+
+;; base colemak dh
+(deflayer base
+      q       w       f       p       b           j       l       u       y       scln
+  esc @clalt       @clctl       @clsft  @clgui  g           m       @crgui  @crsft  @crctl       @cralt ret
+      x  c  d       v       z           k       h       ,       .  /
+                              spc     @t2         @t3     @t4
+  )
+
+(deflayer syms
+      S-grv grv     S-8     S-7     \             S--     '       S-'     -     bspc
+  esc tab   S-6     S-5     S-4     +             S-\     S-[     S-]     =     ret ret
+      S-grv S-3     S-2     S-1     +             [       S-9     S-0     ]     '
+                            @base   @ossft        @osctl  @nums
+  )
+
+(deflayer navs
+      esc   @mwl    @mmu      @mwr        S-5           A-lft   C-S-tab C-tab   A-rght  bspc
+  esc tab   @mml    @mmd      @mmr        -             lft     down    up      rght    ret ret
+      S-grv S-3     @mwu      @mwd        S--           mlft    S-9     S-0     ]       XX
+                              @base       @ossft        @osctl  spc
+  )
+
+(deflayer nums
+      esc   pp      prev    next    S-5           /       7     8     9     bspc
+  esc tab   mute    voldwn  volu    -             S-8     4     5     6     ret ret
+      S-grv S-3     S-2     S-1     S--           0       1     2     3     XX
+                            @base   @ossft        @osctl  spc
+  )
